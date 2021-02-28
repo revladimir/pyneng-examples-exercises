@@ -23,3 +23,16 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 """
+#start
+
+mac_table = []
+
+with open("CAM_table.txt") as f:
+    for line in f:
+        words = line.split()
+        if words and words[0].isdigit():
+            vlan, mac, _, intf = words
+            mac_table.append([int(vlan), mac, intf])
+print(mac_table)
+for vlan, mac, intf in sorted(mac_table):
+    print(f"{vlan:<9}{mac:20}{intf}")

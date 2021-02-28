@@ -23,3 +23,19 @@
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 """
+# start
+
+def get_int_vlan_map(config_filename):
+    access_dict = {}
+    trunk_dict = {}
+    with open(config_filename, "r") as cfg:
+        for line in cfg:
+            if line.startswith("interface"):
+                intf = line.split()[-1]
+            elif "access vlan" in line:
+                access_dict[intf] = int(line.split()[-1])
+            elif "trunk allowed" in line:
+                vlans = line.split()[-1].split(",")
+                vlans_str = [int(vl) for vl in vlans]
+                trunk_dict[intf] = vlans_str
+    return access_dict, trunk_dict
