@@ -48,6 +48,8 @@ access_config_2 и убедиться, что в итоговом списке �
 
 """
 
+from pprint import pprint
+
 access_mode_template = [
     "switchport mode access",
     "switchport access vlan",
@@ -75,3 +77,19 @@ def generate_access_config(intf_vlan_mapping, access_template):
 
     Возвращает список всех портов в режиме access с конфигурацией на основе шаблона
     """
+
+    access_config = []
+    for intf, vlan in intf_vlan_mapping.items():
+        access_config.append(f"inteface {intf}")
+        for command in access_template:
+            if command.endswith("access vlan"):
+                access_config.append(f"{command} {vlan}")
+            else:
+                access_config.append(f"{command}")
+    return access_config
+
+pprint(generate_access_config(access_config, access_mode_template))
+print("\n"*4)
+pprint(generate_access_config(access_config_2, access_mode_template))
+
+
