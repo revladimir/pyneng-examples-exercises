@@ -28,3 +28,68 @@ IP-адреса, диапазоны адресов и так далее, так 
 а не ввод пользователя.
 
 """
+
+#import re
+#
+#
+#def get_ip_from_cfg(config):
+#    result = {}
+#    regex = (r"^interface (?P<intf>\S+)"
+#             r"|address (?P<ip>\S+) (?P<mask>\S+)")
+#
+#    with open(config) as f:
+#        for line in f:
+#            match = re.search(regex, line)
+#            if match:
+#                if  match.lastgroup == "intf":
+#                    intf = match.group(match.lastgroup)
+#                elif match.lastgroup == "mask":
+#                    result.setdefault(intf, [])
+#                    result[intf].append(match.group("ip", "mask"))
+#    return result
+#
+#print(get_ip_from_cfg("config_r2.txt"))
+
+
+#import re
+#
+#
+#def get_ip_from_config(config):
+##    result = {}
+#    with open(config) as f:
+#        match = re.finditer(
+#            r"interface (\S+)\n"
+#            r"(?: .*\n)*"
+#            r" ip address \S+ \S+\n"
+#            r"( ip address \S+ \S+ secondary)*",
+#            f.read()
+#        )
+#        result = {m.group(1): re.findall(r"ip address (\S+) (\S+)", m.group()) for m in match}
+#    return result
+#
+#print(get_ip_from_config("config_r2.txt"))
+
+import re
+
+
+def get_ip_from_config(config):
+    result = {}
+    regex = (r"^interface (?P<intf>\S+)"
+             r"|address (?P<ip>\S+) (?P<mask>\S+)"
+            )
+    with open(config) as f:
+#        match = re.finditer(regex, f.read())
+#        f.seek(0)
+        for line in f:
+            match = re.search(regex, line)
+            if match:
+                if match.lastgroup == "intf":
+                    intf = match.group("intf")
+                else:
+                    result.setdefault(intf, [])
+                    result[intf].append(match.group("ip", "mask"))
+    return result
+
+if __name__ == "__main__":
+    print(get_ip_from_config("config_r2.txt"))
+

@@ -26,9 +26,13 @@
 import re
 
 
-def get_ip_from_cfg(config):
+def get_ip_from_config(config):
     regex = r"ip address (\S+) (\S+)"
     with open(config) as f:
         result = [m.groups() for m in re.finditer(regex, f.read())]
     return result
-print(get_ip_from_cfg("config_r1.txt"))
+    
+if __name__ == "__main__":
+    print(get_ip_from_config("config_r1.txt"))
+    
+    
